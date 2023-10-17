@@ -10,12 +10,6 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-  # param_dir = LaunchConfiguration(
-  #     'param_dir',
-  #     default=os.path.join(
-  #         get_package_share_directory('gaja_visualizer'),
-  #         'param',
-  #         'arithmetic_config.yaml'))
   ld = LaunchDescription();
 
   talk = Node(
