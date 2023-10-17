@@ -1,0 +1,8 @@
+/.vscode/*.json
+/build
+*.pyc
+/log
+/install
+/launch/install
+/launch/log
+/launch/build
