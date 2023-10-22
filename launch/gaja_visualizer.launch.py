@@ -15,15 +15,19 @@ def generate_launch_description():
   talk = Node(
     package='gaja_visualizer',
     executable='talker',
-    name='talker',
-    parameters=[""])
+    name='talker')
 
   listen = Node(
     package='gaja_visualizer',
     executable='listener',
-    name='listener',
-    parameters=[""])
+    name='listener')
   
+  # control = Node(
+  #   package='gaja_visualizer',
+  #   executable='controller',
+  #   name='controller')
   ld.add_action(talk)
   ld.add_action(listen)
+  # ld.add_action(control)
+
   return ld;
