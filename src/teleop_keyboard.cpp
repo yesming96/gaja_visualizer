@@ -107,40 +107,40 @@ int main(int argc, char** argv) {
     // increase/decrease linear velocity or steering angle
     if (key == 'A' || key == 'i') {
       if (linear_vel >= 27.8) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg",
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       } else {
         // 0.35 = 1km/h
         linear_vel = linear_vel + 0.35;
-        printf("Current: speed %f km/h \t steering angle %f deg",
+        printf("Current: speed %f km/h \t steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       }
     } else if (key == 'B' || key == 'k') {
       if (linear_vel <= -5.5) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg",
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       } else {
         linear_vel = linear_vel - 0.35;
-        printf("Current: speed %f km/h \t steering angle %f deg",
+        printf("Current: speed %f km/h \t steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       }
     } else if (key == 'J' || key == 'd') {
       // 0.35 = 22.5 deg
       if (steering_angle <= -0.785) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg",
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       } else {
         steering_angle = steering_angle - 0.03;
-        printf("Current: speed %f km/h \t steering angle %f deg",
+        printf("Current: speed %f km/h \t steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       }
     } else if (key == 'C' || key == 'l') {
       if (steering_angle >= 0.785) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg",
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       } else {
         steering_angle = steering_angle + 0.03;
-        printf("Current: speed %f km/h \t steering angle %f deg",
+        printf("Current: speed %f km/h \t steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       }
     } else {
@@ -148,7 +148,7 @@ int main(int argc, char** argv) {
         steering_angle = 0.0;
         linear_vel = 0.0;
         printf("\tRobot Stopped..!! \n");
-        printf("Current: speed %f km/h \t steering angle %f deg",
+        printf("Current: speed %f km/h \t steering angle %f deg \n",
                linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
       }
       // If ctrl-C (^C) was pressed, terminate the program
