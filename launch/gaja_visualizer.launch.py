@@ -24,6 +24,13 @@ def generate_launch_description():
     name='listener',
     parameters=[""])
   
+  control = Node(
+    package='gaja_visualizer',
+    executable='controller',
+    name='controller',
+    parameters=[""])
   ld.add_action(talk)
   ld.add_action(listen)
+  ld.add_action(control)
+
   return ld;

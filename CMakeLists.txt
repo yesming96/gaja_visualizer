@@ -41,9 +41,14 @@ ament_target_dependencies(talker rclcpp std_msgs geometry_msgs)
 add_executable(listener src/test_subscriber.cpp)
 ament_target_dependencies(listener rclcpp std_msgs geometry_msgs)
 
+# controller
+add_executable(controller src/teleop_keyboard.cpp)
+ament_target_dependencies(controller rclcpp std_msgs geometry_msgs)
+
 install(TARGETS
   talker
   listener
+  controller
   DESTINATION lib/${PROJECT_NAME}
   )
 
