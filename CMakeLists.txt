@@ -2,6 +2,9 @@ cmake_minimum_required(VERSION 3.8)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(gaja_visualizer)
 
+set(CHAMELEON_FOLDER "./gaja")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/gaja/cmake")
+
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
@@ -17,6 +20,18 @@ endif()
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 17)
 endif()
+
+## Source files
+file(GLOB_RECURSE SRCS src/*.cpp gaja/src/*.cpp)
+
+#Ignore warnings for specific folders
+file(GLOB_RECURSE IGNORE_FILES gaja/external/*)
+set_source_files_properties(
+  ${IGNORE_FILES}
+  PROPERTIES
+  COMPILE_FLAGS "-w"
+)
+
 
 # find dependencies
 find_package(ament_cmake REQUIRED)

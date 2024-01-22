@@ -13,14 +13,14 @@
 
 #include <map>
 
+#include "../gaja/include/board/state_board.hpp"
 #include "geometry_msgs/msg/twist.hpp"
 #include "rclcpp/rclcpp.hpp"
 
 // Map for movement keys
-std::map<char, std::vector<float>> moveBindings{
-    {'i', {1, 0, 0, 0}},  {'j', {0, 0, 0, 1}}, {'l', {0, 0, 0, -1}},
-    {'k', {0, 0, 0, 0}},  {'A', {1, 0, 0, 0}}, {'D', {0, 0, 0, 1}},
-    {'C', {0, 0, 0, -1}}, {'B', {0, 0, 0, 0}}};
+std::map<char, std::vector<float>> moveBindings{{'i', {1, 0, 0, 0}},  {'j', {0, 0, 0, 1}}, {'l', {0, 0, 0, -1}},
+                                                {'k', {0, 0, 0, 0}},  {'A', {1, 0, 0, 0}}, {'D', {0, 0, 0, 1}},
+                                                {'C', {0, 0, 0, -1}}, {'B', {0, 0, 0, 0}}};
 
 // Reminder message
 const char* msg = R"(
@@ -92,8 +92,7 @@ int main(int argc, char** argv) {
   rclcpp::init(argc, argv);
   auto node = rclcpp::Node::make_shared("teleop");
   // define publisher
-  auto _pub =
-      node->create_publisher<geometry_msgs::msg::Twist>("/cmd_control", 10);
+  auto _pub = node->create_publisher<geometry_msgs::msg::Twist>("/cmd_control", 10);
 
   geometry_msgs::msg::Twist twist;
   printf("%s", msg);
@@ -107,49 +106,49 @@ int main(int argc, char** argv) {
     // increase/decrease linear velocity or steering angle
     if (key == 'A' || key == 'i') {
       if (linear_vel >= 27.8) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       } else {
         // 0.35 = 1km/h
         linear_vel = linear_vel + 0.35;
-        printf("Current: speed %f km/h \t steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       }
     } else if (key == 'B' || key == 'k') {
       if (linear_vel <= -5.5) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       } else {
         linear_vel = linear_vel - 0.35;
-        printf("Current: speed %f km/h \t steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       }
     } else if (key == 'J' || key == 'd') {
       // 0.35 = 22.5 deg
       if (steering_angle <= -0.785) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       } else {
         steering_angle = steering_angle - 0.03;
-        printf("Current: speed %f km/h \t steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       }
     } else if (key == 'C' || key == 'l') {
       if (steering_angle >= 0.785) {
-        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t [MAX] steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       } else {
         steering_angle = steering_angle + 0.03;
-        printf("Current: speed %f km/h \t steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("Current: speed %f km/h \t steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       }
     } else {
       if (key == 's' || key == 'S') {
         steering_angle = 0.0;
         linear_vel = 0.0;
-        printf("\tRobot Stopped..!! \n");
-        printf("Current: speed %f km/h \t steering angle %f deg \n",
-               linear_vel * 1000.0 / 3600.0, steering_angle * 57.2958);
+        printf("\t[Emergency] Robot Stopped..!! \n");
+        printf("Current: speed %f km/h \t steering angle %f deg \n", linear_vel * 1000.0 / 3600.0,
+               steering_angle * 57.2958);
       }
       // If ctrl-C (^C) was pressed, terminate the program
       else if (key == '\x03') {
@@ -159,6 +158,9 @@ int main(int argc, char** argv) {
       }
     }
 
+    gaja::StateBoard::get_instance().set_control_input(gaja::ControlInput(linear_vel, 0.0, 0.0, steering_angle));
+
+    // is needed?
     // Update the Twist message
     twist.linear.x = linear_vel;
     twist.linear.y = 0;
